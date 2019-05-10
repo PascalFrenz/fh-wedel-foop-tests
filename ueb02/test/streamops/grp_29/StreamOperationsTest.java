@@ -29,9 +29,18 @@ public class StreamOperationsTest {
         return expected.containsAll(found) && found.containsAll(expected);
     }
 
+    @Test(expected = AssertionError.class)
+    public void testDivisors_Assertion() {
+        StreamOperations.divisors(0);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testIsPrime_Assertion() {
+        StreamOperations.isPrime(0);
+    }
+
     @Test
     public void testDivisors() {
-        assertTrue(testDivisorsMethod(0, Collections.emptyList()));
         assertTrue(testDivisorsMethod(2, Collections.emptyList()));
         assertTrue(testDivisorsMethod(5, Collections.emptyList()));
         assertTrue(testDivisorsMethod(7, Collections.emptyList()));
