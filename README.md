@@ -9,6 +9,6 @@ Die Ordnerstruktur orientiert sich an der Ordnerstruktur, die von der Übung gef
 
 Die Idee ist hier, dass per Copy&Paste alle Tests in das eigentliche Projekt übernommen werden können, ohne großen manuellen Aufwand.
 
-## Disclamer
+## Disclaimer
 Jeder, der hier trotz Verbot des Teilens der Tests etwas hochläd, tut dies auf seine eigene Verantwortung!
 
