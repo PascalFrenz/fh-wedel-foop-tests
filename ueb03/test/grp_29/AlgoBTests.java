@@ -17,7 +17,7 @@ public class AlgoBTests {
     }
 
     @Test
-    public void testExampleB2a() throws InterruptedException {
+    public void test_ExampleB2a() throws InterruptedException {
         testUtils.testBWithTwoStudentsAndOneStep(
                 250,
                 500,
@@ -26,7 +26,7 @@ public class AlgoBTests {
     }
 
     @Test
-    public void testExampleB2b() throws InterruptedException {
+    public void test_ExampleB2b() throws InterruptedException {
         testUtils.testBWithTwoStudentsAndOneStep(
                 200,
                 100,
@@ -35,7 +35,7 @@ public class AlgoBTests {
     }
 
     @Test
-    public void testExampleB2c() throws InterruptedException {
+    public void test_ExampleB2c() throws InterruptedException {
         testUtils.testBWithManyStudentsAndManySteps(
                 2,
                 2,
@@ -47,7 +47,7 @@ public class AlgoBTests {
     }
 
     @Test
-    public void testExampleB3() throws InterruptedException {
+    public void test_ExampleB3() throws InterruptedException {
         testUtils.testBWithManyStudentsAndManySteps(
                 3,
                 3,
@@ -59,52 +59,108 @@ public class AlgoBTests {
     }
 
     @Test
-    public void testAlgorithmB_5_Students_SeasonLongerThanEat() throws InterruptedException {
+    public void test_SeasonLongerThanEat() throws InterruptedException {
         /*
-         * In 3 Schritten Würzen alle Studenten => 1500ms
+         * In 3 Schritten Würzen alle Studenten => 300ms
          * Danach muss der letzte Student noch Essen => 50ms
          */
         testUtils.testBWithManyStudentsAndManySteps(
                 5,
                 1,
-                500,
+                100,
                 50,
-                1550L,
+                350L,
                 null
         );
     }
 
     @Test
-    public void testAlgorithmB_5_Students_EatLongerThanSeason() throws InterruptedException {
+    public void test_SeasonLongerThanEat_ManySteps() throws InterruptedException {
+        /*
+         * In 5 Schritten Würzen alle Studenten => 5 * 500ms = 2500ms
+         * Danach muss der letzte Student noch Essen => 50ms
+         *
+         * Das Scheudulig kann hier die Zeiten etwas variieren, daher eine Bereichsangabe.
+         */
+        testUtils.testBWithManyStudentsAndManySteps(
+                5,
+                10,
+                100,
+                50,
+                2550L,
+                2850L
+        );
+    }
+
+    @Test
+    public void test_EatLongerThanSeason() throws InterruptedException {
         /*
          * Alle Studenten würzen => 3 * 50ms = 150ms
-         * Dann muss der letzte Student fertig essen => 500ms
+         * Dann muss der letzte Student fertig essen => 100ms
          * Die anderen Studenten beenden das Essen vor ihm.
          */
         testUtils.testBWithManyStudentsAndManySteps(
                 5,
                 1,
                 50,
-                500,
-                650L,
+                100,
+                250L,
                 null
         );
     }
 
     @Test
-    public void testAlgorithmB_5_Students_EqualTiming_LongRunning() throws InterruptedException {
+    public void test_EatLongerThanSeason_ManySteps() throws InterruptedException {
         /*
-         * Alle Studenten würzen => 5 * 5000ms = 25000ms
-         * Dann muss der letzte Student fertig essen => 5000ms
+         * Alle Studenten würzen => 5 * 250ms = 1250ms
+         * Dann muss der letzte Student fertig essen => 75ms
          * Die anderen Studenten beenden das Essen vor ihm.
+         *
+         * Das Scheudulig kann hier die Zeiten etwas variieren, daher eine Bereichsangabe.
          */
         testUtils.testBWithManyStudentsAndManySteps(
                 5,
-                2,
-                5000,
-                5000,
-                30000L,
+                10,
+                50,
+                75,
+                1325L,
+                1450L
+        );
+    }
+
+    @Test
+    public void test_EatAndSeasonEqual() throws InterruptedException {
+        /*
+         * Alle Studenten Würzen => 3 * 150ms
+         * Der Letzte isst fertig => 50ms
+         * Die anderen Studenten werden vor ihm fertig.
+         */
+        testUtils.testBWithManyStudentsAndManySteps(
+                5,
+                1,
+                50,
+                50,
+                200L,
                 null
+        );
+    }
+
+    @Test
+    public void test_EatAndSeasonEqual_ManySteps() throws InterruptedException {
+        /*
+         * Alle Studenten würzen => 25 * 50ms = 1250ms
+         * Dann muss der letzte Student fertig essen => 50ms
+         * Die anderen Studenten beenden das Essen vor ihm.
+         *
+         * Das Scheudulig kann hier die Zeiten etwas variieren, daher eine Bereichsangabe.
+         */
+        testUtils.testBWithManyStudentsAndManySteps(
+                5,
+                10,
+                50,
+                50,
+                1300L,
+                1350L
         );
     }
 }
