@@ -1,0 +1,279 @@
+import org.junit.Test;
+import server.PrimeManager;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
+public class TestPrimeManager {
+
+    @Test
+    public void testPrimeManager_isPrimeNoWaitTrue() {
+        PrimeManager pm = new PrimeManager(10);
+        pm.startWorker(5);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertTrue(pm.isPrime(2));
+        assertTrue(pm.isPrime(3));
+        assertTrue(pm.isPrime(5));
+        assertTrue(pm.isPrime(7));
+        assertTrue(pm.isPrime(11));
+        assertTrue(pm.isPrime(13));
+        assertTrue(pm.isPrime(17));
+        assertTrue(pm.isPrime(19));
+        pm.stopWorker();
+    }
+
+    @Test
+    public void testPrimeManager_isPrimeNoWaitFalse() {
+        PrimeManager pm = new PrimeManager(10);
+        pm.startWorker(5);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertFalse(pm.isPrime(4));
+        assertFalse(pm.isPrime(6));
+        assertFalse(pm.isPrime(8));
+        assertFalse(pm.isPrime(9));
+        assertFalse(pm.isPrime(10));
+        assertFalse(pm.isPrime(12));
+        assertFalse(pm.isPrime(14));
+        assertFalse(pm.isPrime(15));
+        pm.stopWorker();
+    }
+
+
+
+    @Test
+    public void testPrimeManager_isPrimeWaitTrue() {
+        PrimeManager pm = new PrimeManager(10);
+        pm.startWorker(50);
+
+        try {
+            Thread.sleep(15);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        assertTrue(pm.isPrime(11));
+        assertTrue(pm.isPrime(13));
+        assertTrue(pm.isPrime(17));
+        assertTrue(pm.isPrime(19));
+        pm.stopWorker();
+    }
+
+    @Test
+    public void testPrimeManager_isPrimeWaitTrueDifferentOrder() {
+        PrimeManager pm = new PrimeManager(10);
+        pm.startWorker(50);
+
+        try {
+            Thread.sleep(15);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        assertTrue(pm.isPrime(17));
+        assertTrue(pm.isPrime(13));
+        pm.stopWorker();
+    }
+
+
+    @Test
+    public void testPrimeManager_isPrimeFactorsRunning() {
+        PrimeManager pm = new PrimeManager(10);
+        pm.startWorker(5);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        List<Long> act = pm.primeFactors(50);
+        List<Long> expFactors = new ArrayList<>();
+        expFactors.add((long)2);
+        expFactors.add((long)5);
+        expFactors.add((long)5);
+        pm.stopWorker();
+
+        assertEquals(expFactors.toString(), act.toString());
+    }
+
+    @Test
+    public void testPrimeManager_isPrimeFactorsRunningPrime() {
+        PrimeManager pm = new PrimeManager(10);
+        pm.startWorker(5);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        List<Long> act = pm.primeFactors(41);
+        List<Long> expFactors = new ArrayList<>();
+        expFactors.add((long)41);
+        pm.stopWorker();
+
+        assertEquals(expFactors.toString(), act.toString());
+    }
+
+
+
+    @Test
+    public void testPrimeManager_isPrimeFactorsStopped() {
+        PrimeManager pm = new PrimeManager(10);
+        pm.startWorker(5);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        pm.stopWorker();
+
+        List<Long> act = pm.primeFactors(50);
+        List<Long> expFactors = new ArrayList<>();
+        expFactors.add((long)2);
+        expFactors.add((long)5);
+        expFactors.add((long)5);
+
+        assertEquals(expFactors.toString(), act.toString());
+    }
+
+
+    @Test
+    public void testPrimeManager_isPrimeFactorsStoppedPrime() {
+        PrimeManager pm = new PrimeManager(10);
+        pm.startWorker(5);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        pm.stopWorker();
+
+        List<Long> act = pm.primeFactors(41);
+        List<Long> expFactors = new ArrayList<>();
+        expFactors.add((long)41);
+
+        assertEquals(expFactors.toString(), act.toString());
+    }
+
+    @Test
+    public void testPrimeManager_isPrimeListNoWaitAfterStop() {
+        PrimeManager pm = new PrimeManager(10);
+        pm.startWorker(100);
+        try {
+            Thread.sleep(610);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        pm.stopWorker();
+
+        List<Long> checkPrimes = new ArrayList<>();
+        checkPrimes.add((long) 2);
+        checkPrimes.add((long) 3);
+        checkPrimes.add((long) 5);
+        checkPrimes.add((long) 7);
+
+        assertArrayEquals(checkPrimes.toArray(), pm.knownPrimes().toArray());
+    }
+
+    @Test
+    public void testPrimeManager_isPrimeListWaitAfterStop() {
+        PrimeManager pm = new PrimeManager(10);
+        pm.startWorker(100);
+        try {
+            Thread.sleep(610);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        pm.stopWorker();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        List<Long> checkPrimes = new ArrayList<>();
+        checkPrimes.add((long) 2);
+        checkPrimes.add((long) 3);
+        checkPrimes.add((long) 5);
+        checkPrimes.add((long) 7);
+
+        assertArrayEquals(checkPrimes.toArray(), pm.knownPrimes().toArray());
+    }
+
+
+    @Test
+    public void testPrimeManager_isPrimeLogOnlyFound() {
+        PrimeManager pm = new PrimeManager(10);
+        pm.startWorker(100);
+        try {
+            Thread.sleep(610);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        pm.stopWorker();
+
+        List<String> expLog = new ArrayList<>();
+        expLog.add("found prime: 2");
+        expLog.add("found prime: 3");
+        expLog.add("found prime: 5");
+        expLog.add("found prime: 7");
+        assertArrayEquals(expLog.toArray(), pm.getLog().toArray());
+    }
+
+
+    @Test
+    public void testPrimeManager_isPrimeLogIsPrime() {
+        PrimeManager pm = new PrimeManager(10);
+        pm.startWorker(100);
+        try {
+            Thread.sleep(610);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        pm.stopWorker();
+        pm.isPrime(5);
+
+        List<String> expLog = new ArrayList<>();
+        expLog.add("found prime: 2");
+        expLog.add("found prime: 3");
+        expLog.add("found prime: 5");
+        expLog.add("found prime: 7");
+        expLog.add("requested: isprime,5");
+        expLog.add("response: isprime,5,true");
+        assertEquals(expLog.toString(), pm.getLog().toString());
+    }
+
+
+
+    @Test
+    public void testPrimeManager_isPrimeLogPrimeFactors() {
+        PrimeManager pm = new PrimeManager(10);
+        pm.startWorker(100);
+        try {
+            Thread.sleep(610);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        pm.stopWorker();
+        pm.primeFactors(4);
+        pm.primeFactors(3);
+
+        List<String> expLog = new ArrayList<>();
+        expLog.add("found prime: 2");
+        expLog.add("found prime: 3");
+        expLog.add("found prime: 5");
+        expLog.add("found prime: 7");
+        expLog.add("requested: primefactors,4");
+        expLog.add("response: primefactors,4,[2,2]");
+        expLog.add("requested: primefactors,3");
+        expLog.add("response: primefactors,3,[3]");
+        assertEquals(expLog.toString(), pm.getLog().toString());
+    }
+    
+}
